@@ -33,3 +33,16 @@ df_hourlySteps412 = pd.read_csv("../data/Fitabase Data 4.12.16-5.12.16/hourlySte
 df_hourlySteps = pd.concat([df_hourlySteps312,df_hourlySteps412],ignore_index=True)
 df_hourlySteps = df_hourlySteps.set_index(["Id", "ActivityHour"])
 df_hourlySteps.to_csv("../data/Custom_Dataframes/hourlySteps.csv")
+
+df_minuteSleep312 = pd.read_csv("../data/Fitabase Data 3.12.16-4.11.16/minuteSleep_merged.csv")
+df_minuteSleep412 = pd.read_csv("../data/Fitabase Data 4.12.16-5.12.16/minuteSleep_merged.csv")
+df_minuteSleep = pd.concat([df_minuteSleep312,df_minuteSleep412],ignore_index=True)
+df_minuteSleep = df_minuteSleep.set_index(["Id", "date"])
+df_minuteSleep.to_csv("../data/Custom_Dataframes/minuteSleep.csv")
+
+df_weightLogInfo312 = pd.read_csv("../data/Fitabase Data 3.12.16-4.11.16/weightLogInfo_merged.csv")
+df_weightLogInfo412 = pd.read_csv("../data/Fitabase Data 4.12.16-5.12.16/weightLogInfo_merged.csv")
+df_weightLogInfo = pd.concat([df_weightLogInfo312,df_weightLogInfo412],ignore_index=True)
+df_weightLogInfo = df_weightLogInfo.set_index(["Id", "Date"])
+df_weightLogInfo.to_csv("../data/Custom_Dataframes/weightLogInfo.csv")
+
