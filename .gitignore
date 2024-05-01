@@ -162,3 +162,4 @@ cython_debug/
 # custom files to ignore
 .Rhistory
 data/Custom_Dataframes/
+preprocessed_data/*
