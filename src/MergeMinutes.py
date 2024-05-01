@@ -45,10 +45,19 @@ class MergeMinutes:
 
     def save_merged_dataframe(self):
         """
+        Save the merged dataframe to a CSV and pickle file.
+        The pickle is a binary file that can be used to save the dataframe including indexes.
+        """
+        print("Saving merged dataframe to CSV and pickle...")
+        self.df_minutes.to_csv("../preprocessed_data/minutes.csv")
+        self.df_minutes.to_pickle("../preprocessed_data/minutes.pkl")
+
+    def save_merged_dataframe(self):
+        """
         Save the merged dataframe to a CSV file.
         """
         print("Saving merged dataframe to CSV...")
-        self.df_minutes.to_csv("../data/Custom_Dataframes/minutes.csv")
+        self.df_minutes.to_csv("../preprocessed_data/minutes.csv")
 
     def minute_calories(self):
         """
@@ -134,8 +143,24 @@ class MergeMinutes:
         df_minute_heart_rates = df_seconds_heart_rates.groupby(
             ["Id", pd.Grouper(key="ActivityMinute", freq="1min")]).mean()
 
-        df_minute_heart_rates = df_minute_heart_rates.rename(columns={"Value": "heartrate"})
+        df_minute_heart_rates = df_minute_heart_rates.rename(columns={"Value": "Heartrate"})
         return df_minute_heart_rates
+
+    def minute_activity(self):
+        """
+        Read and process activity data in minute resolution.
+        """
+        print("Reading and processing minute activity data...")
+        df_minute_activity = pd.concat(
+            [pd.read_csv("../data/Fitabase Data 3.12.16-4.11.16/dailyActivity_merged.csv"),
+             pd.read_csv("../data/Fitabase Data 4.12.16-5.12.16/dailyActivity_merged.csv")],
+            ignore_index=True)
+        df_minute_activity["ActivityMinute"] = pd.to_datetime(df_minute_activity["ActivityDate"],
+                                                              format="%m/%d/%Y")
+
+        # TODO Resample the dataframe to minute resolution and merge this result with the other minute dataframes
+
+        return df_minute_activity
 
 
 if __name__ == "__main__":
