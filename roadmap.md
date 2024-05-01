@@ -34,7 +34,7 @@ This project is organized with six phases which marks the milestones of the proj
 - [ ] **Task 3:** Data Cleaning
     - [ ] Handle missing values and outliers in the dataset.
 
-### Phase 2: Tool Development (May 2)
+### Phase 2: Tool Development (May 16)
 
 - [ ] **Task 4:** Data Access
     - [ ] Implement functionality for users to select specific subjects and time periods.
