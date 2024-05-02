@@ -1,27 +1,57 @@
 import pandas as pd
-from IPython.display import display
 
-df = pd.read_csv('../data/Custom_Dataframes/DailyActivity.csv')
-
-#print(df.to_string())
+df = pd.read_csv('../preprocessed_data/minutes.csv')
 
 
-# number of occurrences of 0.0 or 0 in each column of the DataFrame
-def count_zeros_in_columns(df):
+def count_zeros(df):
     # Count the number of occurrences of 0.0 or 0 in each column
-    count_zeros_column = ((df == 0.0) | (df == 0)).sum()
-    return count_zeros_column
+    zeros_count = ((df == 0.0) | (df == 0)).sum()
+    return zeros_count
+
+def count_missing_values(df):
+    missing_values = df.isnull().sum()
+    return missing_values
 
 
-# if row has only 0.0- or 0-value in each column remove from DataFrame
-def remove_rows_with_zeros(df):
-    # checks if any row contains only 0.0 or 0 values in each column
-    has_zeros_rowwise = (df.eq(0.0) | df.eq(0)).all(axis=1)
+def fill_na_with_zero(df, column):
+    """
+    Replaces all NaN (missing) values in a column with 0.
 
-    # DataFrame is filtered to keep rows where at least one value is not 0.0 or 0
-    df_filtered = df[~has_zeros_rowwise]
+    Parameters:
+    df (pandas.DataFrame): Input DataFrame
+    column (str): Name of the column
 
-    return df_filtered
+    Returns:
+    pandas.DataFrame: DataFrame with NaN values replaced by 0 in the specified column
+    """
+    df[column].fillna(0, inplace=True)
+    return df
 
-# definition of outliers
+def interpolate_missing_values(df):
+    """
+    Interpolates missing values in all columns of a DataFrame.
+
+    Parameters:
+    df (pandas.DataFrame): Input DataFrame
+
+    Returns:
+    pandas.DataFrame: DataFrame with missing values interpolated
+    """
+    interpolated_df = df.copy()  # copy to avoid modifications on the original DataFrame
+    for column in df.columns:
+        if column.lower() != 'heartrate':
+            interpolated_df[column] = df[column].interpolate(method='linear')
+    return interpolated_df
+
+
+
+count_zeros_column = count_zeros(df)
+print(count_zeros_column)
+
+na_values = count_missing_values(df)
+print(na_values)
+
+# df = fill_na_with_zero(df, 'sleep')
+# interpolated_df = interpolate_missing_values(df)
+
 
