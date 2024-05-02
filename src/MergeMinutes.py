@@ -60,13 +60,6 @@ class MergeMinutes:
         print("Load merged dataframe from pickle...")
         self.df_minutes = pd.read_pickle('../preprocessed_data/minutes.pkl')
 
-    def save_merged_dataframe(self):
-        """
-        Save the merged dataframe to a CSV file.
-        """
-        print("Saving merged dataframe to CSV...")
-        self.df_minutes.to_csv("../preprocessed_data/minutes.csv")
-
     def minute_calories(self):
         """
         Read and process calories data in minute resolution.
