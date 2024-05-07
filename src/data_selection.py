@@ -16,7 +16,8 @@ def select_data(df):
     #print(df.head())
 
     column_names = df.columns.tolist()
-    column_names.remove('DateTime', 'Month', 'Day', 'WeekDay', 'Hour')
+    values_to_remove = ['DateTime', 'Month', 'Day', 'WeekDay', 'Hour']
+    column_names = [x for x in column_names if x not in values_to_remove]
     print("List of subjects to select from: ", column_names)
 
     # prompts user to select subject(s) and splits the input into a list of subjects
@@ -53,20 +54,20 @@ def select_data(df):
         user_end = input("Please select an ending time period within the DateTime range\n")
 
         min = df['DateTime'].min()
-        print("Min DateTime", min)
         max = df['DateTime'].max()
-        print("Max DateTime", max)
 
         # checks if the selected time range is valid
         if ((user_start >= min) & (user_end <= max) &
                 ((user_end >= user_start) & (user_end <= max))):
             out_of_range = False
         else:
-            print("Selected time period is outside the DateTime range.")
+            print("Selected time period is false or outside the DateTime range.")
+            print("Min DateTime", min)
+            print("Max DateTime", max)
 
     # filters rows based on user's time period selection
     filtered_subset = selected_subset[(selected_subset['DateTime'] >= user_start) &
-                                      (selected_subset['DateTime'] <= user_end)]  # Problem: does not take the user_end value
+                                      (selected_subset['DateTime'] <= user_end)]
 
 
     return filtered_subset
