@@ -13,7 +13,11 @@ def select_data(df):
         Returns:
         pandas.DataFrame: DataFrame with desired subjects and time period specified by the user
     """
-    print(df.head())
+    #print(df.head())
+
+    column_names = df.columns.tolist()
+    column_names.remove('DateTime', 'Month', 'Day', 'WeekDay', 'Hour')
+    print("List of subjects to select from: ", column_names)
 
     # prompts user to select subject(s) and splits the input into a list of subjects
     user_subjects = input("Please select one or more subjects\n").lower()
@@ -29,7 +33,7 @@ def select_data(df):
 
         if len(matching_columns) != len(user_subjects):
             # prompts user to select subject(s) again if selected subjects do not match column names
-            print("The selected subjects do not match with all the column names of the dataframe.")
+            print("The selected subjects don't match with the column names of the dataframe.")
             user_subjects = input("Please select again\n").lower()
             user_subjects = re.split(r'[,\s;|]+', user_subjects)
         else:
