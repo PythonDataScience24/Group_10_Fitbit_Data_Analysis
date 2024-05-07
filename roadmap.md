@@ -28,11 +28,11 @@ This project is organized with six phases which marks the milestones of the proj
 
 - [X] **Task 1:** Data Collection
     - [X] Gather CSV files containing Fitbit data of 30 users.
-- [ ] **Task 2:** Data Merging
-  - [ ] Decide which data is relevant for our project.
-  - [ ] Merge data from multiple CSV files into a single DataFrame.
-- [ ] **Task 3:** Data Cleaning
-    - [ ] Handle missing values and outliers in the dataset.
+- [X] **Task 2:** Data Merging
+  - [X] Decide which data is relevant for our project.
+  - [X] Merge data from multiple CSV files into a single DataFrame.
+- [X] **Task 3:** Data Cleaning
+    - [X] Handle missing values and outliers in the dataset.
 
 ### Phase 2: Tool Development (May 16)
 
