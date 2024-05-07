@@ -12,7 +12,7 @@ def select_data(df):
 
         Returns:
         pandas.DataFrame: DataFrame with desired subjects and time period specified by the user
-        """
+    """
     print(df.head())
 
     # prompts user to select subject(s) and splits the input into a list of subjects
