@@ -8,6 +8,7 @@ external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 app = Dash(__name__, external_stylesheets=external_stylesheets)
 
 df = pd.read_csv('../preprocessed_data/minutes.csv')
+df['DateTime'] = pd.to_datetime(df['DateTime'])
 
 app.layout = html.Div([
     html.H1(children='FitBit Dashboard', style={'textAlign':'center'}),
@@ -20,7 +21,9 @@ app.layout = html.Div([
             min_date_allowed=date(2016, 3, 11),
             max_date_allowed=date(2016, 5, 12),
             initial_visible_month=date(2016, 3, 11),
+            className="four columns"
         ),
+        dcc.Dropdown(['Minutes', 'Hours', 'Days', 'Weeks', 'Months'], 'Minutes', id='resolution-selection', className="four columns"),
     ], className="container"),
 
     html.Div([
@@ -61,12 +64,14 @@ app.layout = html.Div([
     [
         Input('subject-selection', 'value'),
         Input('date-picker-range', 'start_date'),
-        Input('date-picker-range', 'end_date')
+        Input('date-picker-range', 'end_date'),
+        Input('resolution-selection', 'value'),
      ]
 )
-def update_steps(subject, date_range_start, date_range_end):
+def update_steps(subject, date_range_start, date_range_end, resolution):
     dff = select_subject(df, subject)
     dff = select_date_range(dff, date_range_start, date_range_end)
+    dff = select_resolution(dff, resolution)
 
     return (px.line(dff, x='DateTime', y='Steps'),
             px.line(dff, x='DateTime', y='Calories'),
@@ -103,6 +108,26 @@ def select_date_range(dff, date_range_start, date_range_end):
 
     return dff[(pd.to_datetime(dff['DateTime']) >= date_range_start)
                & (pd.to_datetime(dff['DateTime']) <= date_range_end)]
+
+def select_resolution(dff, resolution):
+    """
+    Selects the resolution based on the given value.
+
+    :param resolution: The resolution to select
+    :return: The selected resolution
+    """
+
+    if resolution == 'Minutes':
+        return dff
+    elif resolution == 'Hours':
+        return dff.resample('h', on='DateTime').mean().reset_index()
+    elif resolution == 'Days':
+        return dff.resample('D', on='DateTime').mean().reset_index()
+    elif resolution == 'Weeks':
+        return dff.resample('W', on='DateTime').mean().reset_index()
+    elif resolution == 'Months':
+        return dff.resample('M', on='DateTime').mean().reset_index()
+
 
 if __name__ == '__main__':
     app.run(debug=True)
