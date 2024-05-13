@@ -13,7 +13,15 @@ df['DateTime'] = pd.to_datetime(df['DateTime'])
 app.layout = html.Div([
     html.H1(children='FitBit Dashboard', style={'textAlign':'center'}),
     html.Div([
-        dcc.Dropdown(df.Id.unique(), '1503960366', id='subject-selection', className="four columns"),
+        dcc.Dropdown(df.Id.unique(), '1503960366', id='subject-selection', className="three columns"),
+        dcc.Dropdown(
+            id='plot-type-selection',
+            options=[
+                {'label': 'Line Plot', 'value': 'line'},
+                {'label': 'Bar Chart', 'value': 'bar'},
+                {'label': 'Scatter Plot', 'value': 'scatter'}
+            ],
+            value='line', className="two columns"),
         dcc.DatePickerRange(
             id='date-picker-range',
             display_format='DD.MM.Y',
@@ -23,7 +31,7 @@ app.layout = html.Div([
             initial_visible_month=date(2016, 3, 11),
             className="four columns"
         ),
-        dcc.Dropdown(['Minutes', 'Hours', 'Days', 'Weeks', 'Months'], 'Minutes', id='resolution-selection', className="four columns"),
+        dcc.Dropdown(['Minutes', 'Hours', 'Days', 'Weeks', 'Months'], 'Minutes', id='resolution-selection', className="two columns"),
     ], className="container"),
 
     html.Div([
@@ -62,23 +70,38 @@ app.layout = html.Div([
         Output('heartrate-graph', 'figure'),
     ],
     [
+        Input('plot-type-selection', 'value'),  # Include the plot type input
         Input('subject-selection', 'value'),
         Input('date-picker-range', 'start_date'),
         Input('date-picker-range', 'end_date'),
         Input('resolution-selection', 'value'),
      ]
 )
-def update_steps(subject, date_range_start, date_range_end, resolution):
+def update_steps(plot_type, subject, date_range_start, date_range_end, resolution):
     dff = select_subject(df, subject)
     dff = select_date_range(dff, date_range_start, date_range_end)
     dff = select_resolution(dff, resolution)
 
-    return (px.line(dff, x='DateTime', y='Steps'),
-            px.line(dff, x='DateTime', y='Calories'),
-            px.line(dff, x='DateTime', y='Intensity'),
-            px.line(dff, x='DateTime', y='Sleep'),
-            px.line(dff, x='DateTime', y='Heartrate'),
-            )
+    # Dictionary of plot functions
+    plot_functions = {
+        'line': px.line,
+        'bar': px.bar,
+        'scatter': px.scatter
+    }
+
+    if plot_type in plot_functions:
+        plot_function = plot_functions[plot_type]
+        # Generate plots using the selected plot function for each metric
+        return (
+            plot_function(dff, x='DateTime', y='Steps'),
+            plot_function(dff, x='DateTime', y='Calories'),
+            plot_function(dff, x='DateTime', y='Intensity'),
+            plot_function(dff, x='DateTime', y='Sleep'),
+            plot_function(dff, x='DateTime', y='Heartrate'),
+        )
+    else:
+        # If plot_type is invalid, return None for all plots
+        return (None, None, None, None, None)
 
 def select_subject(dff, subject):
     """
