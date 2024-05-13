@@ -25,7 +25,6 @@ class DataSelection:
         self.df_selected = self.select_time_range(selected_subset)
 
 
-
     def save_selected_data(self):
         """
         Save the merged dataframe to a CSV and pickle file.
