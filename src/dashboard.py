@@ -82,6 +82,7 @@ def update_steps(plot_type, subject, date_range_start, date_range_end, resolutio
     dff = select_date_range(dff, date_range_start, date_range_end)
     dff = select_resolution(dff, resolution)
 
+    dff['Id'] = pd.Categorical(dff['Id'])
 
     # Dictionary of plot functions
     plot_functions = {
