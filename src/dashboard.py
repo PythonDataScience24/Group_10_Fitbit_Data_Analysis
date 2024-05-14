@@ -13,7 +13,7 @@ df['DateTime'] = pd.to_datetime(df['DateTime'])
 app.layout = html.Div([
     html.H1(children='FitBit Dashboard', style={'textAlign':'center'}),
     html.Div([
-        dcc.Dropdown(df.Id.unique(), '1503960366', id='subject-selection', className="three columns"),
+        dcc.Dropdown(df.Id.unique(), ['1503960366'], multi=True, id='subject-selection', className="three columns"),
         dcc.Dropdown(
             id='plot-type-selection',
             options=[
@@ -82,6 +82,7 @@ def update_steps(plot_type, subject, date_range_start, date_range_end, resolutio
     dff = select_date_range(dff, date_range_start, date_range_end)
     dff = select_resolution(dff, resolution)
 
+
     # Dictionary of plot functions
     plot_functions = {
         'line': px.line,
@@ -93,11 +94,11 @@ def update_steps(plot_type, subject, date_range_start, date_range_end, resolutio
         plot_function = plot_functions[plot_type]
         # Generate plots using the selected plot function for each metric
         return (
-            plot_function(dff, x='DateTime', y='Steps'),
-            plot_function(dff, x='DateTime', y='Calories'),
-            plot_function(dff, x='DateTime', y='Intensity'),
-            plot_function(dff, x='DateTime', y='Sleep'),
-            plot_function(dff, x='DateTime', y='Heartrate'),
+            plot_function(dff, x='DateTime', y='Steps', color='Id'),
+            plot_function(dff, x='DateTime', y='Calories', color='Id'),
+            plot_function(dff, x='DateTime', y='Intensity', color='Id'),
+            plot_function(dff, x='DateTime', y='Sleep', color='Id'),
+            plot_function(dff, x='DateTime', y='Heartrate', color='Id')
         )
     else:
         # If plot_type is invalid, return None for all plots
@@ -110,7 +111,7 @@ def select_subject(dff, subject):
     :param subject: The subject to select
     :return: The selected subject
     """
-    return dff[dff['Id'] == subject]
+    return dff[dff['Id'].isin(subject)]
 
 def select_date_range(dff, date_range_start, date_range_end):
     """
@@ -143,13 +144,13 @@ def select_resolution(dff, resolution):
     if resolution == 'Minutes':
         return dff
     elif resolution == 'Hours':
-        return dff.resample('h', on='DateTime').mean().reset_index()
+        return dff.groupby(['Id', pd.Grouper(key='DateTime', freq='H')]).mean().reset_index()
     elif resolution == 'Days':
-        return dff.resample('D', on='DateTime').mean().reset_index()
+        return dff.groupby(['Id', pd.Grouper(key='DateTime', freq='D')]).mean().reset_index()
     elif resolution == 'Weeks':
-        return dff.resample('W', on='DateTime').mean().reset_index()
+        return dff.groupby(['Id', pd.Grouper(key='DateTime', freq='W')]).mean().reset_index()
     elif resolution == 'Months':
-        return dff.resample('M', on='DateTime').mean().reset_index()
+        return dff.groupby(['Id', pd.Grouper(key='DateTime', freq='M')]).mean().reset_index()
 
 
 if __name__ == '__main__':
