@@ -13,7 +13,7 @@ df['DateTime'] = pd.to_datetime(df['DateTime'])
 app.layout = html.Div([
     html.H1(children='FitBit Dashboard', style={'textAlign':'center'}),
     html.Div([
-        dcc.Dropdown(df.Id.unique(), ['1503960366'], multi=True, id='subject-selection', className="three columns"),
+        dcc.Dropdown(options=df['Id'].unique(), value=[1503960366, 1624580081, 1644430081], multi=True, id='subject-selection', className="four columns"),
         dcc.Dropdown(
             id='plot-type-selection',
             options=[
@@ -31,7 +31,7 @@ app.layout = html.Div([
             initial_visible_month=date(2016, 3, 11),
             className="four columns"
         ),
-        dcc.Dropdown(['Minutes', 'Hours', 'Days', 'Weeks', 'Months'], 'Minutes', id='resolution-selection', className="two columns"),
+        dcc.Dropdown(['Minutes', 'Hours', 'Days', 'Weeks', 'Months'], value='Days', id='resolution-selection', className="two columns"),
     ], className="container"),
 
     html.Div([
