@@ -145,7 +145,7 @@ def select_resolution(dff, resolution):
     if resolution == 'Minutes':
         return dff
     elif resolution == 'Hours':
-        return dff.groupby(['Id', pd.Grouper(key='DateTime', freq='H')]).mean().reset_index()
+        return dff.groupby(['Id', pd.Grouper(key='DateTime', freq='h')]).mean().reset_index()
     elif resolution == 'Days':
         return dff.groupby(['Id', pd.Grouper(key='DateTime', freq='D')]).mean().reset_index()
     elif resolution == 'Weeks':
