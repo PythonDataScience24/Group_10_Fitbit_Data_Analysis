@@ -170,13 +170,13 @@ def select_resolution(dff, resolution):
 
 
     if resolution == 'Hours':
-        return dff.groupby(['Id', pd.Grouper(key='DateTime', freq='H')]).sum().reset_index()
+        return dff.groupby(['Id', pd.Grouper(key='DateTime', freq='h')]).sum().reset_index()
     if resolution == 'Days':
         return dff.groupby(['Id', pd.Grouper(key='DateTime', freq='D')]).sum().reset_index()
     if resolution == 'Weeks':
         return dff.groupby(['Id', pd.Grouper(key='DateTime', freq='W')]).sum().reset_index()
     if resolution == 'Months':
-        return dff.groupby(['Id', pd.Grouper(key='DateTime', freq='M')]).sum().reset_index()
+        return dff.groupby(['Id', pd.Grouper(key='DateTime', freq='ME')]).sum().reset_index()
 
     # minutes is the default resolution
     return dff
