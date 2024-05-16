@@ -1,3 +1,7 @@
+"""
+This module contains the MergeMinutes class which is responsible for generating the
+preprocessed data in the minutes resolution. The class reads the data from the csv files
+"""
 import pandas as pd
 
 
@@ -11,27 +15,45 @@ class MergeMinutes:
             d. Perform any additional operations on the dataframe
                 - For Sleep, rename and drop columns
                 - For Sleep, round down all the minutes to the nearest
-                - For HeartRate, create a new dataframe with the mean of the heart rates for each minute and column ID, ActivityMinute, and HeartRate
+                - For HeartRate, create a new dataframe with the mean of
+                    the heart rates for each minute and column ID, ActivityMinute, and HeartRate
                 - For HeartRate, rename columns
         2. Merge all the dataframes into a single dataframe
-        3. Add additional date columns (month, day, weekday and hour) to the dataframe for easier analysis
+        3. Add additional date columns (month, day, weekday and hour)
+            to the dataframe for easier analysis
         3. Save the dataframe to a csv file
     """
 
     def __init__(self):
         self.df_minutes = None
-        pass
 
     def merge_all_dataframes(self):
+        """
+        Merge all the dataframes into a single dataframe.
+        """
         print("Merging all dataframes...")
 
         # merge all data into one single dataframe
-        self.df_minutes = pd.merge(self.minute_calories(), self.minute_intensities(), on=["Id", "ActivityMinute"],
+        self.df_minutes = pd.merge(self.minute_calories(),
+                                   self.minute_intensities(),
+                                   on=["Id", "ActivityMinute"],
                                    how="outer")
-        self.df_minutes = pd.merge(self.df_minutes, self.minute_METs(), on=["Id", "ActivityMinute"], how="outer")
-        self.df_minutes = pd.merge(self.df_minutes, self.minute_sleep(), on=["Id", "ActivityMinute"], how="outer")
-        self.df_minutes = pd.merge(self.df_minutes, self.minute_steps(), on=["Id", "ActivityMinute"], how="outer")
-        self.df_minutes = pd.merge(self.df_minutes, self.minute_heart_rate(), on=["Id", "ActivityMinute"], how="outer")
+        self.df_minutes = pd.merge(self.df_minutes,
+                                   self.minute_mets(),
+                                   on=["Id", "ActivityMinute"],
+                                   how="outer")
+        self.df_minutes = pd.merge(self.df_minutes,
+                                   self.minute_sleep(),
+                                   on=["Id", "ActivityMinute"],
+                                   how="outer")
+        self.df_minutes = pd.merge(self.df_minutes,
+                                   self.minute_steps(),
+                                   on=["Id", "ActivityMinute"],
+                                   how="outer")
+        self.df_minutes = pd.merge(self.df_minutes,
+                                   self.minute_heart_rate(),
+                                   on=["Id", "ActivityMinute"],
+                                   how="outer")
 
         self.df_minutes = self.df_minutes.rename(columns={"ActivityMinute": "DateTime"})
 
@@ -41,7 +63,8 @@ class MergeMinutes:
         self.df_minutes['WeekDay'] = self.df_minutes['DateTime'].dt.weekday
         self.df_minutes['Hour'] = self.df_minutes['DateTime'].dt.hour
 
-        self.df_minutes = self.df_minutes.set_index(["Id", "DateTime", "Month", "Day", "WeekDay", "Hour"])
+        self.df_minutes = self.df_minutes.set_index(
+            ["Id", "DateTime", "Month", "Day", "WeekDay", "Hour"])
 
     def save_merged_dataframe(self):
         """
@@ -79,35 +102,43 @@ class MergeMinutes:
         """
         print("Reading and processing minute intensities data...")
         df_minute_intensities = pd.concat(
-            [pd.read_csv("../data/Fitabase Data 3.12.16-4.11.16/minuteIntensitiesNarrow_merged.csv"),
-             pd.read_csv("../data/Fitabase Data 4.12.16-5.12.16/minuteIntensitiesNarrow_merged.csv")],
+            [pd.read_csv(
+                "../data/Fitabase Data 3.12.16-4.11.16/minuteIntensitiesNarrow_merged.csv"),
+             pd.read_csv(
+                 "../data/Fitabase Data 4.12.16-5.12.16/minuteIntensitiesNarrow_merged.csv")],
             ignore_index=True)
-        df_minute_intensities["ActivityMinute"] = pd.to_datetime(df_minute_intensities["ActivityMinute"],
-                                                                 format="%m/%d/%Y %I:%M:%S %p")
+        df_minute_intensities["ActivityMinute"] = (
+            pd.to_datetime(df_minute_intensities["ActivityMinute"],
+                           format="%m/%d/%Y %I:%M:%S %p"))
         return df_minute_intensities
 
-    def minute_METs(self):
+    def minute_mets(self):
         """
         Read and process METs (Metabolic equivalent of task) data in minute resolution.
         """
         print("Reading and processing minute METs data...")
-        df_minuteMETs = pd.concat([pd.read_csv("../data/Fitabase Data 3.12.16-4.11.16/minuteMETsNarrow_merged.csv"),
-                                   pd.read_csv("../data/Fitabase Data 4.12.16-5.12.16/minuteMETsNarrow_merged.csv")],
-                                  ignore_index=True)
-        df_minuteMETs["ActivityMinute"] = pd.to_datetime(df_minuteMETs["ActivityMinute"], format="%m/%d/%Y %I:%M:%S %p")
-        return df_minuteMETs
+        df_minute_mets = pd.concat([
+            pd.read_csv("../data/Fitabase Data 3.12.16-4.11.16/minuteMETsNarrow_merged.csv"),
+            pd.read_csv("../data/Fitabase Data 4.12.16-5.12.16/minuteMETsNarrow_merged.csv")],
+            ignore_index=True)
+        df_minute_mets["ActivityMinute"] = pd.to_datetime(
+            df_minute_mets["ActivityMinute"],
+            format="%m/%d/%Y %I:%M:%S %p")
+        return df_minute_mets
 
     def minute_sleep(self):
         """
         Read and process the sleep data in minute resolution.
         """
         print("Reading and processing minute sleep data...")
-        df_minute_sleeps = pd.concat([pd.read_csv("../data/Fitabase Data 3.12.16-4.11.16/minuteSleep_merged.csv"),
-                                      pd.read_csv("../data/Fitabase Data 4.12.16-5.12.16/minuteSleep_merged.csv")],
-                                     ignore_index=True)
+        df_minute_sleeps = pd.concat([
+            pd.read_csv("../data/Fitabase Data 3.12.16-4.11.16/minuteSleep_merged.csv"),
+            pd.read_csv("../data/Fitabase Data 4.12.16-5.12.16/minuteSleep_merged.csv")],
+            ignore_index=True)
         df_minute_sleeps = df_minute_sleeps.rename(columns={"date": "ActivityMinute"})
 
-        df_minute_sleeps["ActivityMinute"] = pd.to_datetime(df_minute_sleeps["ActivityMinute"]).dt.floor("min")
+        df_minute_sleeps["ActivityMinute"] = (pd.to_datetime(df_minute_sleeps["ActivityMinute"])
+                                              .dt.floor("min"))
         df_minute_sleeps["ActivityMinute"] = pd.to_datetime(df_minute_sleeps["ActivityMinute"])
 
         df_minute_sleeps = df_minute_sleeps.rename(columns={"value": "Sleep"})
@@ -120,17 +151,19 @@ class MergeMinutes:
         :return:
         """
         print("Reading and processing minute steps data...")
-        df_minute_steps = pd.concat([pd.read_csv("../data/Fitabase Data 3.12.16-4.11.16/minuteStepsNarrow_merged.csv"),
-                                     pd.read_csv("../data/Fitabase Data 4.12.16-5.12.16/minuteStepsNarrow_merged.csv")],
-                                    ignore_index=True)
+        df_minute_steps = pd.concat([
+            pd.read_csv("../data/Fitabase Data 3.12.16-4.11.16/minuteStepsNarrow_merged.csv"),
+            pd.read_csv("../data/Fitabase Data 4.12.16-5.12.16/minuteStepsNarrow_merged.csv")],
+            ignore_index=True)
         df_minute_steps["ActivityMinute"] = pd.to_datetime(df_minute_steps["ActivityMinute"],
                                                            format="%m/%d/%Y %I:%M:%S %p")
         return df_minute_steps
 
     def minute_heart_rate(self):
         """
-        Read and process heart rates data in minute resolution. We need to grop the data by minute and
-        take the mean of the heart rates since the data is in the seconds resolution.
+        Read and process heart rates data in minute resolution.
+        We need to grop the data by minute and take the mean of the heart rates
+        since the data is in the seconds resolution.
         """
         print("Reading and processing second heart rates data...")
         df_seconds_heart_rates = pd.concat(
@@ -138,7 +171,8 @@ class MergeMinutes:
              pd.read_csv("../data/Fitabase Data 4.12.16-5.12.16/heartrate_seconds_merged.csv")],
             ignore_index=True)
 
-        df_seconds_heart_rates["Time"] = pd.to_datetime(df_seconds_heart_rates["Time"], format="%m/%d/%Y %I:%M:%S %p")
+        df_seconds_heart_rates["Time"] = pd.to_datetime(df_seconds_heart_rates["Time"],
+                                                        format="%m/%d/%Y %I:%M:%S %p")
 
         df_seconds_heart_rates.rename(columns={"Time": "ActivityMinute"}, inplace=True)
         df_minute_heart_rates = df_seconds_heart_rates.groupby(
