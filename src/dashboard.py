@@ -1,7 +1,12 @@
+"""
+This module is responsible for creating a dashboard using Dash.
+The user can select the subjects, the plot type, the date range, and the resolution of the data to be shown.
+"""
+
+from datetime import date
 from dash import Dash, html, dcc, callback, Output, Input
 import plotly.express as px
 import pandas as pd
-from datetime import date
 
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
@@ -11,9 +16,12 @@ df = pd.read_csv('../preprocessed_data/minutes.csv')
 df['DateTime'] = pd.to_datetime(df['DateTime'])
 
 app.layout = html.Div([
-    html.H1(children='FitBit Dashboard', style={'textAlign':'center'}),
+    html.H1(children='FitBit Dashboard', style={'textAlign': 'center'}),
     html.Div([
-        dcc.Dropdown(options=df['Id'].unique(), value=[1503960366, 1624580081, 1644430081], multi=True, id='subject-selection', className="four columns"),
+        dcc.Dropdown(options=df['Id'].unique(),
+                     value=[1503960366, 1624580081, 1644430081],
+                     multi=True,
+                     id='subject-selection', className="four columns"),
         dcc.Dropdown(
             id='plot-type-selection',
             options=[
@@ -31,31 +39,34 @@ app.layout = html.Div([
             initial_visible_month=date(2016, 3, 11),
             className="four columns"
         ),
-        dcc.Dropdown(['Minutes', 'Hours', 'Days', 'Weeks', 'Months'], value='Days', id='resolution-selection', className="two columns"),
+        dcc.Dropdown(['Minutes', 'Hours', 'Days', 'Weeks', 'Months'],
+                     value='Days',
+                     id='resolution-selection',
+                     className="two columns"),
     ], className="container"),
 
     html.Div([
-        html.H2(children='Steps', style={'textAlign':'center'}),
+        html.H2(children='Steps', style={'textAlign': 'center'}),
         dcc.Graph(id='steps-graph'),
     ]),
 
     html.Div([
-        html.H2(children='Calories', style={'textAlign':'center'}),
+        html.H2(children='Calories', style={'textAlign': 'center'}),
         dcc.Graph(id='calories-graph'),
     ]),
 
     html.Div([
-        html.H2(children='Intensity', style={'textAlign':'center'}),
+        html.H2(children='Intensity', style={'textAlign': 'center'}),
         dcc.Graph(id='intensity-graph'),
     ]),
 
     html.Div([
-        html.H2(children='Sleep', style={'textAlign':'center'}),
+        html.H2(children='Sleep', style={'textAlign': 'center'}),
         dcc.Graph(id='sleep-graph'),
     ]),
 
     html.Div([
-        html.H2(children='Heartrate', style={'textAlign':'center'}),
+        html.H2(children='Heartrate', style={'textAlign': 'center'}),
         dcc.Graph(id='heartrate-graph'),
     ]),
 ])
@@ -75,9 +86,20 @@ app.layout = html.Div([
         Input('date-picker-range', 'start_date'),
         Input('date-picker-range', 'end_date'),
         Input('resolution-selection', 'value'),
-     ]
+    ]
 )
 def update_steps(plot_type, subject, date_range_start, date_range_end, resolution):
+    """
+    Updates the plots based on the selected values.
+    This method is called when any of the inputs in the callback changes.
+
+    :param plot_type: The selected plot type
+    :param subject: The selected subjects
+    :param date_range_start: The start date of the range
+    :param date_range_end: The end date of the range
+    :param resolution: The selected resolution
+    :return: A list of plots to add to the outputs
+    """
     dff = select_subject(df, subject)
     dff = select_date_range(dff, date_range_start, date_range_end)
     dff = select_resolution(dff, resolution)
@@ -101,9 +123,10 @@ def update_steps(plot_type, subject, date_range_start, date_range_end, resolutio
             plot_function(dff, x='DateTime', y='Sleep', color='Id'),
             plot_function(dff, x='DateTime', y='Heartrate', color='Id')
         )
-    else:
-        # If plot_type is invalid, return None for all plots
-        return (None, None, None, None, None)
+
+    # If plot_type is invalid, return None for all plots
+    return None, None, None, None, None
+
 
 def select_subject(dff, subject):
     """
@@ -114,9 +137,11 @@ def select_subject(dff, subject):
     """
     return dff[dff['Id'].isin(subject)]
 
+
 def select_date_range(dff, date_range_start, date_range_end):
     """
-    Filters the DataFrame based on the selected date range. If no date range is selected, the default range is used.
+    Filters the DataFrame based on the selected date range.
+    If no date range is selected, the default range is used.
 
     :param dff: The dateframe to filter on
     :param date_range_start: The start date of the range
@@ -134,6 +159,7 @@ def select_date_range(dff, date_range_start, date_range_end):
     return dff[(pd.to_datetime(dff['DateTime']) >= date_range_start)
                & (pd.to_datetime(dff['DateTime']) <= date_range_end)]
 
+
 def select_resolution(dff, resolution):
     """
     Selects the resolution based on the given value.
@@ -142,17 +168,18 @@ def select_resolution(dff, resolution):
     :return: The selected resolution
     """
 
-    if resolution == 'Minutes':
-        return dff
-    elif resolution == 'Hours':
-        return dff.groupby(['Id', pd.Grouper(key='DateTime', freq='h')]).mean().reset_index()
-    elif resolution == 'Days':
-        return dff.groupby(['Id', pd.Grouper(key='DateTime', freq='D')]).mean().reset_index()
-    elif resolution == 'Weeks':
-        return dff.groupby(['Id', pd.Grouper(key='DateTime', freq='W')]).mean().reset_index()
-    elif resolution == 'Months':
-        return dff.groupby(['Id', pd.Grouper(key='DateTime', freq='M')]).mean().reset_index()
 
+    if resolution == 'Hours':
+        return dff.groupby(['Id', pd.Grouper(key='DateTime', freq='H')]).sum().reset_index()
+    if resolution == 'Days':
+        return dff.groupby(['Id', pd.Grouper(key='DateTime', freq='D')]).sum().reset_index()
+    if resolution == 'Weeks':
+        return dff.groupby(['Id', pd.Grouper(key='DateTime', freq='W')]).sum().reset_index()
+    if resolution == 'Months':
+        return dff.groupby(['Id', pd.Grouper(key='DateTime', freq='M')]).sum().reset_index()
+
+    # minutes is the default resolution
+    return dff
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -1,0 +1,111 @@
+# PyLint Report
+
+## PyLint report before fixing
+This shows the report over the whole project before fixing the errors. The fixed
+errors are shown with a FIXED: prefix (we fixed the dashboard and merge minute module). 
+```bash
+************* Module dashboard
+FIXED: src\dashboard.py:16:0: C0301: Line too long (154/100) (line-too-long)
+FIXED: src\dashboard.py:34:0: C0301: Line too long (136/100) (line-too-long)
+FIXED: src\dashboard.py:119:0: C0301: Line too long (116/100) (line-too-long)
+FIXED: src\dashboard.py:158:0: C0304: Final newline missing (missing-final-newline)
+FIXED: src\dashboard.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+src\dashboard.py:1:0: E0401: Unable to import 'dash' (import-error)
+src\dashboard.py:2:0: E0401: Unable to import 'plotly.express' (import-error)
+src\dashboard.py:3:0: E0401: Unable to import 'pandas' (import-error)
+FIXED: src\dashboard.py:80:0: C0116: Missing function or method docstring (missing-function-docstring)
+FIXED: src\dashboard.py:94:4: R1705: Unnecessary "else" after "return", remove the "else" and de-indent the code inside it (no-else-return)
+FIXED: src\dashboard.py:145:4: R1705: Unnecessary "elif" after "return", remove the leading "el" from "elif" (no-else-return)
+FIXED: src\dashboard.py:137:0: R1710: Either all return statements in a function should return an expression, or none of them should. (inconsistent-return-statements)
+FIXED: src\dashboard.py:4:0: C0411: standard import "from datetime import date" should be placed before "from dash import Dash, html, dcc, callback, Output, Input" (wrong-import-order)
+************* Module DataSelection
+src\DataSelection.py:53:0: C0301: Line too long (104/100) (line-too-long)
+src\DataSelection.py:57:0: C0301: Line too long (104/100) (line-too-long)
+src\DataSelection.py:74:0: C0301: Line too long (114/100) (line-too-long)
+src\DataSelection.py:75:0: C0301: Line too long (111/100) (line-too-long)
+src\DataSelection.py:89:0: C0301: Line too long (103/100) (line-too-long)
+src\DataSelection.py:104:0: C0305: Trailing newlines (trailing-newlines)
+src\DataSelection.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+src\DataSelection.py:1:0: C0103: Module name "DataSelection" doesn't conform to snake_case naming style (invalid-name)
+src\DataSelection.py:1:0: E0401: Unable to import 'pandas' (import-error)
+src\DataSelection.py:4:0: E0401: Unable to import 'src.MergeMinutes' (import-error)
+src\DataSelection.py:7:0: C0115: Missing class docstring (missing-class-docstring)
+src\DataSelection.py:13:8: W0107: Unnecessary pass statement (unnecessary-pass)
+src\DataSelection.py:15:4: C0116: Missing function or method docstring (missing-function-docstring)
+src\DataSelection.py:37:4: C0116: Missing function or method docstring (missing-function-docstring)
+src\DataSelection.py:43:4: C0116: Missing function or method docstring (missing-function-docstring)
+src\DataSelection.py:66:4: C0116: Missing function or method docstring (missing-function-docstring)
+src\DataSelection.py:70:4: C0116: Missing function or method docstring (missing-function-docstring)
+src\DataSelection.py:77:12: W0622: Redefining built-in 'min' (redefined-builtin)
+src\DataSelection.py:78:12: W0622: Redefining built-in 'max' (redefined-builtin)
+src\DataSelection.py:2:0: C0411: standard import "import re" should be placed before "import pandas as pd" (wrong-import-order)
+src\DataSelection.py:4:0: W0611: Unused MergeMinutes imported from src.MergeMinutes (unused-import)
+************* Module data_cleaning
+src\data_cleaning.py:57:0: C0305: Trailing newlines (trailing-newlines)
+src\data_cleaning.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+src\data_cleaning.py:1:0: E0401: Unable to import 'pandas' (import-error)
+src\data_cleaning.py:6:0: C0116: Missing function or method docstring (missing-function-docstring)
+src\data_cleaning.py:6:16: C0103: Argument name "df" doesn't conform to snake_case naming style (invalid-name)
+src\data_cleaning.py:6:16: W0621: Redefining name 'df' from outer scope (line 3) (redefined-outer-name)
+src\data_cleaning.py:11:0: C0116: Missing function or method docstring (missing-function-docstring)
+src\data_cleaning.py:11:25: C0103: Argument name "df" doesn't conform to snake_case naming style (invalid-name)
+src\data_cleaning.py:11:25: W0621: Redefining name 'df' from outer scope (line 3) (redefined-outer-name)
+src\data_cleaning.py:16:22: C0103: Argument name "df" doesn't conform to snake_case naming style (invalid-name)
+src\data_cleaning.py:16:22: W0621: Redefining name 'df' from outer scope (line 3) (redefined-outer-name)
+src\data_cleaning.py:30:31: C0103: Argument name "df" doesn't conform to snake_case naming style (invalid-name)
+src\data_cleaning.py:30:31: W0621: Redefining name 'df' from outer scope (line 3) (redefined-outer-name)
+************* Module MergeMinutes
+FIXED: src\MergeMinutes.py:14:0: C0301: Line too long (149/100) (line-too-long)
+FIXED: src\MergeMinutes.py:17:0: C0301: Line too long (106/100) (line-too-long)
+FIXED: src\MergeMinutes.py:29:0: C0301: Line too long (114/100) (line-too-long)
+FIXED: src\MergeMinutes.py:31:0: C0301: Line too long (113/100) (line-too-long)
+FIXED: src\MergeMinutes.py:32:0: C0301: Line too long (114/100) (line-too-long)
+FIXED: src\MergeMinutes.py:33:0: C0301: Line too long (114/100) (line-too-long)
+FIXED: src\MergeMinutes.py:34:0: C0301: Line too long (119/100) (line-too-long)
+FIXED: src\MergeMinutes.py:44:0: C0301: Line too long (106/100) (line-too-long)
+FIXED: src\MergeMinutes.py:82:0: C0301: Line too long (101/100) (line-too-long)
+FIXED: src\MergeMinutes.py:83:0: C0301: Line too long (102/100) (line-too-long)
+FIXED: src\MergeMinutes.py:85:0: C0301: Line too long (105/100) (line-too-long)
+FIXED: src\MergeMinutes.py:94:0: C0301: Line too long (116/100) (line-too-long)
+FIXED: src\MergeMinutes.py:95:0: C0301: Line too long (117/100) (line-too-long)
+FIXED: src\MergeMinutes.py:97:0: C0301: Line too long (120/100) (line-too-long)
+FIXED: src\MergeMinutes.py:105:0: C0301: Line too long (114/100) (line-too-long)
+FIXED: src\MergeMinutes.py:106:0: C0301: Line too long (115/100) (line-too-long)
+FIXED: src\MergeMinutes.py:110:0: C0301: Line too long (111/100) (line-too-long)
+FIXED: src\MergeMinutes.py:123:0: C0301: Line too long (119/100) (line-too-long)
+FIXED: src\MergeMinutes.py:124:0: C0301: Line too long (120/100) (line-too-long)
+FIXED: src\MergeMinutes.py:132:0: C0301: Line too long (102/100) (line-too-long)
+FIXED: src\MergeMinutes.py:141:0: C0301: Line too long (118/100) (line-too-long)
+FIXED: src\MergeMinutes.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+FIXED: src\MergeMinutes.py:1:0: C0103: Module name "MergeMinutes" doesn't conform to snake_case naming style (invalid-name)
+src\MergeMinutes.py:1:0: E0401: Unable to import 'pandas' (import-error)
+FIXED: src\MergeMinutes.py:23:8: W0107: Unnecessary pass statement (unnecessary-pass)
+FIXED: src\MergeMinutes.py:25:4: C0116: Missing function or method docstring (missing-function-docstring)
+FIXED: src\MergeMinutes.py:89:4: C0103: Method name "minute_METs" doesn't conform to snake_case naming style (invalid-name)
+FIXED: src\MergeMinutes.py:94:8: C0103: Variable name "df_minuteMETs" doesn't conform to snake_case naming style (invalid-name)
+************* Module SummaryStatistics
+src\SummaryStatistics.py:22:0: C0325: Unnecessary parens after 'if' keyword (superfluous-parens)
+src\SummaryStatistics.py:24:0: C0325: Unnecessary parens after 'elif' keyword (superfluous-parens)
+src\SummaryStatistics.py:34:0: C0305: Trailing newlines (trailing-newlines)
+src\SummaryStatistics.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+src\SummaryStatistics.py:1:0: C0103: Module name "SummaryStatistics" doesn't conform to snake_case naming style (invalid-name)
+src\SummaryStatistics.py:1:0: E0401: Unable to import 'pandas' (import-error)
+src\SummaryStatistics.py:2:0: E0401: Unable to import 'numpy' (import-error)
+src\SummaryStatistics.py:4:0: W0105: String statement has no effect (pointless-string-statement)
+src\SummaryStatistics.py:7:0: C0115: Missing class docstring (missing-class-docstring)
+src\SummaryStatistics.py:10:8: C0103: Attribute name "df" doesn't conform to snake_case naming style (invalid-name)
+src\SummaryStatistics.py:12:4: W0105: String statement has no effect (pointless-string-statement)
+src\SummaryStatistics.py:21:4: C0116: Missing function or method docstring (missing-function-docstring)
+src\SummaryStatistics.py:7:0: R0903: Too few public methods (1/2) (too-few-public-methods)
+src\SummaryStatistics.py:2:0: W0611: Unused numpy imported as np (unused-import)
+
+-----------------------------------
+Your code has been rated at 3.90/10
+```
+
+The rating have improved from 3.90 to 5.62 after fixing the errors.
+
+# Code to fix the errors
+Instead of copy all the code changes to this file, you can take a look at the following commit which contains all the 
+code changes done to fix the above marked errors:
+[ad39497](https://github.com/PythonDataScience24/Group_10_Fitbit_Data_Analysis/commit/ad39497f00330c92e68033f52ec340ffb0033784)
