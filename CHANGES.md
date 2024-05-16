@@ -6,7 +6,7 @@ All notable changes to this project will be documented in this file.
 ## 16.05.2024
 
 ### Task 4 Abstraction and Decomposition 
-In our project, we apply abstraction and decomposition by organizing different modules responsible for distinct tasks.
+In our project, we apply abstraction and decomposition by creating different modules responsible for distinct tasks.
 
 For instance, in `merge_minutes.py`, we've created a class to merge data from various CSV files into a single CSV file.
 
@@ -18,7 +18,7 @@ Abstraction is implemented through a callback function that updates plots based 
 
 We also use decomposition, as the complex task of updating plots is broken down into simpler tasks, such as selecting the subject, date range, and resolution, which are handled by separate functions.
 
-In both files, docstring comments further abstract the functionality of methods and functions. These comments provide a high-level overview of each method or function's purpose.
+In both files, docstring comments further abstract and documment the functionality of methods and functions. These comments provide a high-level overview of each method or function's purpose.
 
 ### Added 
 - Added the ability to display multiple users' data simultaneously in the visualizations.
