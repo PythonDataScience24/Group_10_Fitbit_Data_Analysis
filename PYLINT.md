@@ -106,4 +106,6 @@ Your code has been rated at 3.90/10
 The rating have improved from 3.90 to 5.62 after fixing the errors.
 
 # Code to fix the errors
-Instead of copy all the code changes to this file, you can take a look at the following commit:
+Instead of copy all the code changes to this file, you can take a look at the following commit which contains all the 
+code changes done to fix the above marked errors:
+[ad39497](https://github.com/PythonDataScience24/Group_10_Fitbit_Data_Analysis/commit/ad39497f00330c92e68033f52ec340ffb0033784)
