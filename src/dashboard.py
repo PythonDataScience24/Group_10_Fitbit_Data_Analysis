@@ -115,48 +115,66 @@ def update_steps(plot_type, subject, date_range_start, date_range_end, resolutio
     :param resolution: The selected resolution
     :return: A list of plots to add to the outputs
     """
-    dff = select_subject(df, subject)
-    dff = select_date_range(dff, date_range_start, date_range_end)
-    dff = select_resolution(dff, resolution)
 
-    dff['Id'] = pd.Categorical(dff['Id'])
+    try:
+        dff = select_subject(df, subject)
+        dff = select_date_range(dff, date_range_start, date_range_end)
+        dff = select_resolution(dff, resolution)
 
-    # Dictionary of plot functions
-    plot_functions = {
-        'line': px.line,
-        'bar': px.bar,
-        'scatter': px.scatter
-    }
+        dff['Id'] = pd.Categorical(dff['Id'])
 
-    if plot_type in plot_functions:
-        plot_function = plot_functions[plot_type]
+        summary_statistics = calculate_summary_statistics(dff, metric)
 
-        # Calculate summary statistics for each metric
-        metrics = ['Steps', 'Calories', 'Intensity', 'Sleep', 'Heartrate']
-        if metric in metrics:
-            mean_value = dff[metric].mean()
-            median_value = dff[metric].median()
-            total_value = dff[metric].sum()
+        # Dictionary of plot functions
+        plot_functions = {
+            'line': px.line,
+            'bar': px.bar,
+            'scatter': px.scatter
+        }
 
-            summary_statistics = f"""
-                            {metric}:
-                            Total: {total_value:.2f} \n
-                            Mean: {mean_value:.2f} \n
-                            Median: {median_value:.2f}
-                            """
+        if plot_type in plot_functions:
+            plot_function = plot_functions[plot_type]
 
-        # Generate plots using the selected plot function for each metric
-        return (
-            plot_function(dff, x='DateTime', y='Steps', color='Id'),
-            plot_function(dff, x='DateTime', y='Calories', color='Id'),
-            plot_function(dff, x='DateTime', y='Intensity', color='Id'),
-            plot_function(dff, x='DateTime', y='Sleep', color='Id'),
-            plot_function(dff, x='DateTime', y='Heartrate', color='Id'),
-            summary_statistics
-        )
+            raise Exception("Error: ", plot_type)
 
+            # Generate plots using the selected plot function for each metric
+            return (
+                plot_function(dff, x='DateTime', y='Steps', color='Id'),
+                plot_function(dff, x='DateTime', y='Calories', color='Id'),
+                plot_function(dff, x='DateTime', y='Intensity', color='Id'),
+                plot_function(dff, x='DateTime', y='Sleep', color='Id'),
+                plot_function(dff, x='DateTime', y='Heartrate', color='Id'),
+                summary_statistics
+            )
+    except Exception as e:
         # If plot_type is invalid, return None for all plots
-    return None, None, None, None, None
+        print("Error: ", e)
+        error_message = f"There is an Error while loading the plots, please refresh the site <br> <br> Error Message: {e}"
+        error_figure = {'data': [], 'layout': {'title': {'text': error_message, 'font': {'size': 40, 'color': 'red'}}}}
+        return error_figure, None, None, None, None, None
+
+
+def calculate_summary_statistics(dff, metric):
+    """
+    Calculates the summary statistics for the given metric.
+
+    :param dff: The DataFrame to calculate the statistics on
+    :param metric: The metric to calculate the statistics for
+    :return: The summary statistics
+    """
+    metrics = ['Steps', 'Calories', 'Intensity', 'Sleep', 'Heartrate']
+    if metric in metrics:
+        mean_value = dff[metric].mean()
+        median_value = dff[metric].median()
+        total_value = dff[metric].sum()
+
+        summary_statistics = f"""
+                                {metric}:
+                                Total: {total_value:.2f} \n
+                                Mean: {mean_value:.2f} \n
+                                Median: {median_value:.2f}
+                                """
+    return summary_statistics
 
 
 def select_subject(dff, subject):
@@ -199,7 +217,6 @@ def select_resolution(dff, resolution):
     :return: The selected resolution
     """
 
-
     if resolution == 'Hours':
         return dff.groupby(['Id', pd.Grouper(key='DateTime', freq='h')]).sum().reset_index()
     if resolution == 'Days':
@@ -211,6 +228,7 @@ def select_resolution(dff, resolution):
 
     # minutes is the default resolution
     return dff
+
 
 if __name__ == '__main__':
     app.run(debug=True)
