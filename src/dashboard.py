@@ -4,6 +4,7 @@ The user can select the subjects, the plot type, the date range, and the resolut
 """
 
 from datetime import date
+import os
 from dash import Dash, html, dcc, callback, Output, Input
 import plotly.express as px
 import pandas as pd
@@ -12,7 +13,7 @@ external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
 app = Dash(__name__, external_stylesheets=external_stylesheets)
 
-df = pd.read_csv('../preprocessed_data/minutes.csv')
+df = pd.read_csv(os.path.join(os.path.dirname(os.path.abspath(__file__)), '../preprocessed_data/minutes.csv'))
 df['DateTime'] = pd.to_datetime(df['DateTime'])
 
 app.layout = html.Div([
@@ -134,6 +135,7 @@ def update_steps(plot_type, subject, date_range_start, date_range_end, resolutio
 
         if plot_type in plot_functions:
             plot_function = plot_functions[plot_type]
+
 
             # Generate plots using the selected plot function for each metric
             return (
