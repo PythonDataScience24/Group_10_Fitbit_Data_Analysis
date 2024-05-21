@@ -135,8 +135,6 @@ def update_steps(plot_type, subject, date_range_start, date_range_end, resolutio
         if plot_type in plot_functions:
             plot_function = plot_functions[plot_type]
 
-            raise Exception("Error: ", plot_type)
-
             # Generate plots using the selected plot function for each metric
             return (
                 plot_function(dff, x='DateTime', y='Steps', color='Id'),
