@@ -36,20 +36,20 @@ This project is organized with six phases which marks the milestones of the proj
 
 ### Phase 2: Tool Development (May 16)
 
-- [ ] **Task 4:** Data Access
-    - [ ] Implement functionality for users to select specific subjects and time periods.
-- [ ] **Task 5:** Summary Statistics
-    - [ ] Develop algorithms to generate summary statistics for health measures based on user criteria.
+- [X] **Task 4:** Data Access
+    - [X] Implement functionality for users to select specific subjects and time periods.
+- [X] **Task 5:** Summary Statistics
+    - [X] Develop algorithms to generate summary statistics for health measures based on user criteria.
 
 ### Phase 3: Data visualisation (May 16)
 
-- [ ] **Task 6:** Visualization
-  - [ ] Create initial visualizations of health measures over time.
-- [ ] **Task 7:** User Selection
-  - [ ] Allow users to adjust the resolution of the data.
-  - [ ] Allow users to select the type of visualization.
-  - [ ] Allow users to select the subject of interest.
-  - [ ] Allow users to select the time period of interest.
+- [X] **Task 6:** Visualization
+  - [X] Create initial visualizations of health measures over time.
+- [X] **Task 7:** User Selection
+  - [X] Allow users to adjust the resolution of the data.
+  - [X] Allow users to select the type of visualization.
+  - [X] Allow users to select the subject of interest.
+  - [X] Allow users to select the time period of interest.
 
 ### Phase 4: Documentation and Testing (May 23)
 
