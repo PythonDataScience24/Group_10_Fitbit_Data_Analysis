@@ -69,6 +69,18 @@ app.layout = html.Div([
         html.H2(children='Heartrate', style={'textAlign': 'center'}),
         dcc.Graph(id='heartrate-graph'),
     ]),
+
+    html.Div([
+        html.H2(children='Summary Statistics', style={'textAlign': 'center'}),
+        html.Div([
+            dcc.Dropdown(['Steps', 'Calories', 'Intensity', 'Sleep', 'Heartrate'],
+                         value='Steps',
+                         id='metrics-selection',
+                         className="two columns", style={'margin': 'auto'}),
+            html.Div(id='summary-statistics', className="ten columns",
+                     style={'margin': 'auto', 'fontSize': 20, 'textAlign': 'center', 'padding': '20px'}),
+        ], className="row", style={'marginTop': '20px'})
+    ], className="container"),
 ])
 
 
@@ -79,6 +91,7 @@ app.layout = html.Div([
         Output('intensity-graph', 'figure'),
         Output('sleep-graph', 'figure'),
         Output('heartrate-graph', 'figure'),
+        Output('summary-statistics', 'children')
     ],
     [
         Input('plot-type-selection', 'value'),  # Include the plot type input
@@ -86,9 +99,11 @@ app.layout = html.Div([
         Input('date-picker-range', 'start_date'),
         Input('date-picker-range', 'end_date'),
         Input('resolution-selection', 'value'),
+        Input('metrics-selection', 'value'),
+
     ]
 )
-def update_steps(plot_type, subject, date_range_start, date_range_end, resolution):
+def update_steps(plot_type, subject, date_range_start, date_range_end, resolution, metric):
     """
     Updates the plots based on the selected values.
     This method is called when any of the inputs in the callback changes.
@@ -115,16 +130,32 @@ def update_steps(plot_type, subject, date_range_start, date_range_end, resolutio
 
     if plot_type in plot_functions:
         plot_function = plot_functions[plot_type]
+
+        # Calculate summary statistics for each metric
+        metrics = ['Steps', 'Calories', 'Intensity', 'Sleep', 'Heartrate']
+        if metric in metrics:
+            mean_value = dff[metric].mean()
+            median_value = dff[metric].median()
+            total_value = dff[metric].sum()
+
+            summary_statistics = f"""
+                            {metric}:
+                            Total: {total_value:.2f} \n
+                            Mean: {mean_value:.2f} \n
+                            Median: {median_value:.2f}
+                            """
+
         # Generate plots using the selected plot function for each metric
         return (
             plot_function(dff, x='DateTime', y='Steps', color='Id'),
             plot_function(dff, x='DateTime', y='Calories', color='Id'),
             plot_function(dff, x='DateTime', y='Intensity', color='Id'),
             plot_function(dff, x='DateTime', y='Sleep', color='Id'),
-            plot_function(dff, x='DateTime', y='Heartrate', color='Id')
+            plot_function(dff, x='DateTime', y='Heartrate', color='Id'),
+            summary_statistics
         )
 
-    # If plot_type is invalid, return None for all plots
+        # If plot_type is invalid, return None for all plots
     return None, None, None, None, None
 
 
