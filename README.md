@@ -50,8 +50,10 @@ in the data folder of this project. The data is stored in multiple csv files.
 ### Preprocessing
 To preprocess the data please run the file `src\data_pre_processor.py`. This will take some time (~2min), 
 as it merges all the data into one file. Afterward you will find a `minutes.csv` in the `preprocessed_data` folder.
+Please make sure that you are in the src folder when running the preprocessing, 
+since otherwise the relative paths will fail. 
 ```bash
-python src/data_pre_processor.py
+python data_pre_processor.py
 ```
 
 ## Usage
@@ -70,8 +72,8 @@ There are other modules in the `src` folder which can be used to analyze the dat
 The `data_cleaning.py` file contains logic to handle missing data. 
 But this is currently not used in the data process and can be ignored.
 
-The `SummaryStatistics.py` file contains logic to calculate summary statistics. This is currently not used 
+The `summary_statistics.py` file contains logic to calculate summary statistics. This is currently not used 
 in since many views can already be configured in the dashboard and we did not yet add more statistic features.
 
-The `DataSelection.py` file contains logic to select data based on user input over the command line. 
+The `data_selector.py` file contains logic to select data based on user input over the command line. 
 This is currently not used in the dashboard but can be used as standalone solution.
