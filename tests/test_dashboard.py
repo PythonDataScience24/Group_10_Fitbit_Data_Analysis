@@ -34,11 +34,9 @@ class TestDashboard(unittest.TestCase):
             'Steps': [i for i in range(24) for _ in range(60)]
         })
         test_resolution = 'Hours'
-        print(test_df)
 
         # Call the function with the test data
         result_df = select_resolution(test_df, test_resolution)
-        print(result_df)
 
         # Assert that the result is as expected
         self.assertEqual(result_df['Steps'].tolist(), [i*60 for i in range(24)])
