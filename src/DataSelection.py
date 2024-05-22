@@ -1,13 +1,13 @@
 import pandas as pd
 import re
 
-from src.MergeMinutes import MergeMinutes
+from src.data_pre_processor import DataPreProcessor
 
 
 class DataSelection:
 
     def __init__(self):
-        #self.df_minutes = MergeMinutes()
+        #self.df_minutes = DataPreProcessor()
         #self.df_selected = self.df_minutes.load_pickle_to_dataframe()
         self.df_selected = pd.read_csv('../preprocessed_data/minutes.csv')
         pass

@@ -1,11 +1,11 @@
 """
-This module contains the MergeMinutes class which is responsible for generating the
+This module contains the DataPreProcessor class which is responsible for generating the
 preprocessed data in the minutes resolution. The class reads the data from the csv files
 """
 import pandas as pd
 
 
-class MergeMinutes:
+class DataPreProcessor:
     """
         To Merge the data in the csv file into a single dataframe we do the following:
         1. For each Information Category (Calories, Intensities, METs, Sleep, Steps):
@@ -183,7 +183,7 @@ class MergeMinutes:
 
 
 if __name__ == "__main__":
-    merge_minutes = MergeMinutes()
+    merge_minutes = DataPreProcessor()
     merge_minutes.merge_all_dataframes()
     merge_minutes.save_merged_dataframe()
     print("Merging Done!")

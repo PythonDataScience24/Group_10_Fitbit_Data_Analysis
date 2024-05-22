@@ -48,10 +48,10 @@ The data used in this project originate from [kaggle](https://www.kaggle.com/dat
 in the data folder of this project. The data is stored in multiple csv files.
 
 ### Preprocessing
-To preprocess the data please run the file `src\MergeMinutes.py`. This will take some time (~2min), 
+To preprocess the data please run the file `src\data_pre_processor.py`. This will take some time (~2min), 
 as it merges all the data into one file. Afterward you will find a `minutes.csv` in the `preprocessed_data` folder.
 ```bash
-python src/MergeMinutes.py
+python src/data_pre_processor.py
 ```
 
 ## Usage
