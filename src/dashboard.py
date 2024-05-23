@@ -136,7 +136,6 @@ def update_steps(plot_type, subject, date_range_start, date_range_end, resolutio
         if plot_type in plot_functions:
             plot_function = plot_functions[plot_type]
 
-
             # Generate plots using the selected plot function for each metric
             return (
                 plot_function(dff, x='DateTime', y='Steps', color='Id'),
@@ -168,12 +167,7 @@ def calculate_summary_statistics(dff, metric):
         median_value = dff[metric].median()
         total_value = dff[metric].sum()
 
-        summary_statistics = f"""
-                                {metric}:
-                                Total: {total_value:.2f} \n
-                                Mean: {mean_value:.2f} \n
-                                Median: {median_value:.2f}
-                                """
+        summary_statistics = f"""{metric}: \n Total: {total_value:.2f} \n Mean: {mean_value:.2f} \n Median: {median_value:.2f}"""
     return summary_statistics
 
 
