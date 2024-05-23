@@ -1,5 +1,5 @@
 import unittest
-from src.dashboard import select_subject, select_date_range, select_resolution
+from src.dashboard import select_subject, select_date_range, select_resolution, calculate_summary_statistics
 import pandas as pd
 
 class TestDashboard(unittest.TestCase):
@@ -40,6 +40,24 @@ class TestDashboard(unittest.TestCase):
 
         # Assert that the result is as expected
         self.assertEqual(result_df['Steps'].tolist(), [i*60 for i in range(24)])
+
+    def test_calculate_summary_statistics(self):
+        # Prepare test data
+        test_df = pd.DataFrame({
+            'Steps': [100, 200, 300, 400, 500],
+            'Calories': [1000, 2000, 3000, 4000, 5000],
+            'Intensity': [1, 2, 3, 4, 5],
+            'Sleep': [6, 7, 8, 9, 10],
+            'Heartrate': [60, 70, 80, 90, 100]
+        })
+        test_metric = 'Steps'
+
+        # Call the function with the test data
+        result = calculate_summary_statistics(test_df, test_metric)
+
+        # Assert that the result is as expected
+        expected_result = """Steps: \n Total: 1500.00 \n Mean: 300.00 \n Median: 300.00"""
+        self.assertEqual(result.strip(), expected_result.strip())
 
 if __name__ == '__main__':
     unittest.main()
