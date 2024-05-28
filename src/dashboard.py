@@ -5,7 +5,7 @@ The user can select the subjects, the plot type, the date range, and the resolut
 
 from datetime import date
 import os
-from dash import Dash, html, dcc, callback, Output, Input
+from dash import Dash, html, dcc, callback, Output, Input, dash_table
 import plotly.express as px
 import pandas as pd
 
@@ -74,14 +74,43 @@ app.layout = html.Div([
     html.Div([
         html.H2(children='Summary Statistics', style={'textAlign': 'center'}),
         html.Div([
-            dcc.Dropdown(['Steps', 'Calories', 'Intensity', 'Sleep', 'Heartrate'],
-                         value='Steps',
-                         id='metrics-selection',
-                         className="two columns", style={'margin': 'auto'}),
-            html.Div(id='summary-statistics', className="ten columns",
-                     style={'margin': 'auto', 'fontSize': 20, 'textAlign': 'center', 'padding': '20px'}),
-        ], className="row", style={'marginTop': '20px'})
-    ], className="container"),
+            dcc.Dropdown(
+                ['Steps', 'Calories', 'Intensity', 'Sleep', 'Heartrate'],
+                value='Steps',
+                id='metrics-selection',
+                style={'width': '60%', 'margin': 'auto', 'padding': '10px'}
+            ),
+            dash_table.DataTable(
+                id='summary-statistics-table',
+                columns=[
+                    {"name": "Metric", "id": "metric"},
+                    {"name": "Total", "id": "total"},
+                    {"name": "Mean", "id": "mean"},
+                    {"name": "Median", "id": "median"}
+                ],
+                style_cell={
+                    'textAlign': 'center',
+                    'padding': '10px',
+                    'font-family': 'Arial, sans-serif',
+                    'whiteSpace': 'normal',
+                    'height': 'auto',
+                },
+                style_header={
+                    'backgroundColor': 'rgb(230, 230, 230)',
+                    'fontWeight': 'bold',
+                    'font-family': 'Arial, sans-serif',
+                },
+                style_table={
+                    'margin': 'auto',
+                    'padding': '20px',
+                    'border': '1px solid black',
+                    'borderRadius': '10px',
+                    'boxShadow': '0 4px 8px 0 rgba(0, 0, 0, 0.2)',
+                }
+            )
+        ], style={'display': 'flex', 'flexDirection': 'column', 'alignItems': 'center', 'marginTop': '20px'})
+    ])
+
 ])
 
 
@@ -92,7 +121,7 @@ app.layout = html.Div([
         Output('intensity-graph', 'figure'),
         Output('sleep-graph', 'figure'),
         Output('heartrate-graph', 'figure'),
-        Output('summary-statistics', 'children')
+        Output('summary-statistics-table', 'data')
     ],
     [
         Input('plot-type-selection', 'value'),  # Include the plot type input
@@ -167,8 +196,15 @@ def calculate_summary_statistics(dff, metric):
         median_value = dff[metric].median()
         total_value = dff[metric].sum()
 
-        summary_statistics = f"""{metric}: \n Total: {total_value:.2f} \n Mean: {mean_value:.2f} \n Median: {median_value:.2f}"""
+        summary_statistics = [{
+            "metric": metric,
+            "total": f"{total_value:.2f}",
+            "mean": f"{mean_value:.2f}",
+            "median": f"{median_value:.2f}"
+        }]
+
     return summary_statistics
+
 
 
 def select_subject(dff, subject):
