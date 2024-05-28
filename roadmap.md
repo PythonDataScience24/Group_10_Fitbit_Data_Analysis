@@ -53,11 +53,11 @@ This project is organized with six phases which marks the milestones of the proj
 
 ### Phase 4: Documentation and Testing (May 23)
 
-- [ ] **Task 8:** Documentation
-    - [ ] Provide comprehensive documentation for user guidance.
-- [ ] **Task 9:** Testing
-    - [ ] Define accurate tests for the project.
-    - [ ] Write unit tests for defined tests.
+- [X] **Task 8:** Documentation
+    - [X] Provide comprehensive documentation for user guidance.
+- [X] **Task 9:** Testing
+    - [X] Define accurate tests for the project.
+    - [X] Write unit tests for defined tests.
 
 ### Phase 5: Presentation (May 30)
 
