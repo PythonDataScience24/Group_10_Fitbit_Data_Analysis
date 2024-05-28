@@ -72,8 +72,5 @@ There are other modules in the `src` folder which can be used to analyze the dat
 The `data_cleaning.py` file contains logic to handle missing data. 
 But this is currently not used in the data process and can be ignored.
 
-The `summary_statistics.py` file contains logic to calculate summary statistics. This is currently not used 
-in since many views can already be configured in the dashboard and we did not yet add more statistic features.
-
 The `data_selector.py` file contains logic to select data based on user input over the command line. 
 This is currently not used in the dashboard but can be used as standalone solution.
