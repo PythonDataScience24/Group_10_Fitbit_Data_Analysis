@@ -20,7 +20,7 @@ app.layout = html.Div([
     html.H1(children='FitBit Dashboard', style={'textAlign': 'center'}),
     html.Div([
         dcc.Dropdown(options=df['Id'].unique(),
-                     value=[1503960366, 1624580081, 1644430081],
+                     value=[6117666160, 5577150313, 6775888955],
                      multi=True,
                      id='subject-selection', className="four columns"),
         dcc.Dropdown(
